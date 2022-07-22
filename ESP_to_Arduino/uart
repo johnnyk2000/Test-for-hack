@@ -1,0 +1,10 @@
+void setup() {
+  Serial.begin(115200); 
+  Serial1.begin(115200); //Serial2 is RX, Serial1 is TX
+}
+
+void loop() {
+  Serial1.println('A');
+  delay(2000);
+  
+}
