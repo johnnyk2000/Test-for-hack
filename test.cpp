@@ -5,6 +5,7 @@ using namespace std;
 int sum67(const int a[], int n);
 int main() {
 	
+	cout << "Change" << endl;
 	int n1 = 8;
 	int a1[] = { 1, 2, 5, 6, 99, 99, 1, 7 };
 
