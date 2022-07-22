@@ -22,17 +22,17 @@ char receivedChar;// received value will be stored as CHAR in this variable
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("ESP32_Robojax"); //Bluetooth device name
+  SerialBT.begin("ESP32_Team_2"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
   
     servo1.attach(servo1Pin);
-    //Servo control using ESP32 from Robojax.com
+    
 
 }
 
 void loop() {
 
-  //Robojax.com Servo with ESP32 Bluetooth
+  
   if (Serial.available()) {
     SerialBT.write(Serial.read());
   
