@@ -9,20 +9,30 @@ BluetoothSerial SerialBT; //Bluetooth Connection
 #define SPEED 19
 #define FORWARD 18
 #define BACKWARD 5
+#define SRIGHT 14
+#define FRIGHT 32
+#define BRIGHT 15
 
 void setup() 
 {
   pinMode(SPEED, OUTPUT);
   pinMode(FORWARD, OUTPUT);
   pinMode(BACKWARD, OUTPUT);
+  pinMode(SRIGHT, OUTPUT);
+  pinMode(FRIGHT, OUTPUT);
+  pinMode(BRIGHT, OUTPUT);
+  
   
   Serial.begin(115200);
-  SerialBT.begin("ESP_TMM"); //Bluetooth name is ESP_TMM
+  SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
   Serial.println("Started successfully.");
 
   digitalWrite(SPEED, LOW);
   digitalWrite(FORWARD, LOW);
   digitalWrite(BACKWARD, LOW);
+  digitalWrite(SRIGHT, LOW);
+  digitalWrite(FRIGHT, LOW);
+  digitalWrite(BRIGHT, LOW);
   
 }
 
@@ -40,19 +50,46 @@ void loop()
     digitalWrite(SPEED, 100);
     digitalWrite(FORWARD, HIGH);
     digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
     SerialBT.println("going forward!");
   }
   else if (readIn == 's'){
     digitalWrite(SPEED, 100);
-    digitalWrite(BACKWARD, HIGH);
     digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, HIGH);
+    digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, HIGH);
     SerialBT.println("going backward");
   }
   else if (readIn == 'x'){
     digitalWrite(SPEED, 0);
-    digitalWrite(BACKWARD, LOW);
     digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
     SerialBT.println("STOP");
+  }
+    else if (readIn == 'a'){
+    digitalWrite(SPEED, 0);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 50);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN LEFT");
+  }
+    else if (readIn == 'd'){
+    digitalWrite(SPEED, 50);
+    digitalWrite(FORWARD, HIGH);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN RIGHT");
   }
     
   delay(20);
