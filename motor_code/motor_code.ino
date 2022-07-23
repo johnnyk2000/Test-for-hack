@@ -1,5 +1,3 @@
-
-// motor code
 int in1 = 2;
 int in2 = 4; 
 int enA = 3;
@@ -9,10 +7,10 @@ int in4 = 7;
 int enB = 6;
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial){
-   ;
-  }
+ // Serial.begin(115200);
+ // while (!Serial){
+ //  ;
+ // }
   pinMode(enA, OUTPUT);
   pinMode(in1, OUTPUT);
   pinMode(in2, OUTPUT);
@@ -22,25 +20,25 @@ void setup() {
 
 }
 
-char uart_receive;
+// char uart_receive;
 
 void loop() {
   
-  if (Serial.available()){
-    uart_receive = char(Serial.read());
-  }
-  Serial.println("Msg received: ");
-  Serial.println(uart_receive);
-    
-  delay(2000);
+//  if (Serial.available()){
+//    uart_receive = char(Serial.read());
+//  }
+//  Serial.println("Msg received: ");
+//  Serial.println(uart_receive);
+//    
+//  delay(2000);
 
-  if (Serial.available())
-  {
+ // if (Serial.available())
+ //{
     moveForward();
     stop();
     moveBackward();
     moveForward();
-  }
+ // }
 
   delay(2212);
 }
