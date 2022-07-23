@@ -5,7 +5,7 @@ String Text = "";
 void setup()
 {
  size(900,1000);                         // create window of this size
- myPort=new Serial(this, "/dev/cu.ESP_TMM", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
+ myPort=new Serial(this, "/dev/cu.ESP_TMM_1", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
  myPort.bufferUntil('\n');               //delays calling serialEvent unitl reaching '\n'
 }
 
