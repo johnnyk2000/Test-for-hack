@@ -1,5 +1,7 @@
 
 // motor code
+
+// COPY and PASTE
 void setup() {
   // put your setup code here, to run once:
 
