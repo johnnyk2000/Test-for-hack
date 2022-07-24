@@ -47,46 +47,46 @@ void loop()
 
   if (readIn == 'w') 
   {
-    digitalWrite(SPEED, 100);
+    //digitalWrite(SPEED, 100);
     digitalWrite(FORWARD, HIGH);
     digitalWrite(BACKWARD, LOW);
-    digitalWrite(SRIGHT, 100);
+    //digitalWrite(SRIGHT, 100);
     digitalWrite(FRIGHT, HIGH);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("going forward!");
   }
   else if (readIn == 's'){
-    digitalWrite(SPEED, 100);
+    //digitalWrite(SPEED, 100);
     digitalWrite(FORWARD, LOW);
     digitalWrite(BACKWARD, HIGH);
-    digitalWrite(SRIGHT, 100);
+    //digitalWrite(SRIGHT, 100);
     digitalWrite(FRIGHT, LOW);
     digitalWrite(BRIGHT, HIGH);
     SerialBT.println("going backward");
   }
   else if (readIn == 'x'){
-    digitalWrite(SPEED, 0);
+    //digitalWrite(SPEED, 0);
     digitalWrite(FORWARD, LOW);
     digitalWrite(BACKWARD, LOW);
-    digitalWrite(SRIGHT, 0);
+    //digitalWrite(SRIGHT, 0);
     digitalWrite(FRIGHT, LOW);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("STOP");
   }
     else if (readIn == 'a'){
-    digitalWrite(SPEED, 0);
+    //digitalWrite(SPEED, 0);
     digitalWrite(FORWARD, LOW);
     digitalWrite(BACKWARD, LOW);
-    digitalWrite(SRIGHT, 50);
+    //digitalWrite(SRIGHT, 50);
     digitalWrite(FRIGHT, HIGH);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("TURN LEFT");
   }
     else if (readIn == 'd'){
-    digitalWrite(SPEED, 50);
+    //digitalWrite(SPEED, 50);
     digitalWrite(FORWARD, HIGH);
     digitalWrite(BACKWARD, LOW);
-    digitalWrite(SRIGHT, 0);
+    //digitalWrite(SRIGHT, 0);
     digitalWrite(FRIGHT, LOW);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("TURN RIGHT");
