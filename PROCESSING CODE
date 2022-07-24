@@ -5,7 +5,7 @@ String Text = "";
 void setup()
 {
  size(900,1000);                         // create window of this size
- myPort=new Serial(this, "/dev/cu.ESP_TMM_1", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
+ myPort=new Serial(this, "COM5", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
  myPort.bufferUntil('\n');               //delays calling serialEvent unitl reaching '\n'
 }
 
@@ -27,7 +27,11 @@ void draw()
   stroke(33);                     // sets color used for border around shapes
   strokeWeight(1);                // sets width of stroke when drawing shapes
   
- 
+ rect(x,700,50,50,10);           //creates a rectangle at x,y with size width,height
+  x+=1;
+  if (x == 800)
+    x=0;
+    
   fill(0);
   textSize(32);
   text(Text, 400, 700);           //draws text at x,y
