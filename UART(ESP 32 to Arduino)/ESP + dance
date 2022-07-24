@@ -1,0 +1,165 @@
+//Arduino IDE code for ESP 32
+
+/*void setup() {
+  Serial.begin(9600);
+  //Serial2.begin(9600);
+}
+
+void loop() {
+
+  Serial.print('A');  //send char to Arduino Nano using UART
+  delay(2000); //have a delay similar to the one in Arduino code
+}
+*/
+
+#include "BluetoothSerial.h"
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)           //error catching
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT; //Bluetooth Connection
+
+#define SPEED 19
+#define FORWARD 18
+#define BACKWARD 5
+#define SRIGHT 14
+#define FRIGHT 32
+#define BRIGHT 15
+
+void setup() 
+{
+  pinMode(SPEED, OUTPUT);
+  pinMode(FORWARD, OUTPUT);
+  pinMode(BACKWARD, OUTPUT);
+  pinMode(SRIGHT, OUTPUT);
+  pinMode(FRIGHT, OUTPUT);
+  pinMode(BRIGHT, OUTPUT);
+  
+  
+  Serial.begin(115200);
+  Serial1.begin(115200);
+  SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
+  Serial.println("Started successfully.");
+  
+
+  digitalWrite(SPEED, LOW);
+  digitalWrite(FORWARD, LOW);
+  digitalWrite(BACKWARD, LOW);
+  digitalWrite(SRIGHT, LOW);
+  digitalWrite(FRIGHT, LOW);
+  digitalWrite(BRIGHT, LOW);
+  
+}
+
+char readIn;
+
+void loop() 
+{
+  if (SerialBT.available()) //if there are bytes available in the buffer
+  {
+    readIn = char(SerialBT.read()); //read in one and store it in readIn
+  }
+
+  if (readIn == 'w') 
+  {
+      Forward();
+  }
+  else if (readIn == 's')
+  {
+      Backward();
+  }
+  else if (readIn == 'x')
+  {
+      Stop();
+  }
+  else if (readIn == 'a')
+  {
+      TurnLeft();
+  }
+  else if (readIn == 'd')
+  {
+      TurnRight();
+  }
+  else if (readIn == 't') //dance at 58bpm
+  {
+        TurnLeft();
+        delay(1034);
+        TurnRight();  
+        delay(1034);
+        TurnLeft();
+        delay(1034);
+        TurnRight();  
+        delay(1034);
+//        Backward();
+//        delay(1034);   // when Backward is included the program crashes. 
+        TurnLeft();
+        delay(1034);
+        TurnRight();  
+        delay(1034);
+        Forward();
+        delay(1034);
+        Stop();   
+        
+      
+   }
+    
+  delay(20);
+
+}
+
+void Forward()
+{
+    digitalWrite(SPEED, 100);
+    digitalWrite(FORWARD, HIGH);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("going forward!");
+    Serial1.print('m');
+}
+
+void Backward()
+{
+    digitalWrite(SPEED, 100);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, HIGH);
+    digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, HIGH);
+    SerialBT.println("going backward");
+}
+
+void Stop()
+{
+    digitalWrite(SPEED, 0);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("STOP");
+}
+
+void TurnLeft()
+{
+    digitalWrite(SPEED, 0);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 50);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN LEFT");
+}
+
+void TurnRight()
+{
+    digitalWrite(SPEED, 50);
+    digitalWrite(FORWARD, HIGH);
+    digitalWrite(BACKWARD, LOW);
+    digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN RIGHT");
+}
