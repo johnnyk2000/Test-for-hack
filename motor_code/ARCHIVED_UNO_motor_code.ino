@@ -1,3 +1,5 @@
+// This code was the motor code written on Arduino Uno board. But now we use ESP instead
+
 int in1 = 2;
 int in2 = 4; 
 int enA = 3;
