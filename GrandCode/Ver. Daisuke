@@ -12,6 +12,17 @@ BluetoothSerial SerialBT; //Bluetooth Connection
 #define SRIGHT 14
 #define FRIGHT 32
 #define BRIGHT 15
+//added code from robotarms.ino
+static const int leftArmPin = 14;
+static const int rightArmPin = 32;
+
+//Also added
+Servo_ESP32 leftArm;
+Servo_ESP32 rightArm;
+
+int leftServoAngle =90;
+int leftServo1AngleMin =0;
+int leftServo1AngleMax = 180;
 
 void setup() 
 {
@@ -23,8 +34,13 @@ void setup()
   pinMode(BRIGHT, OUTPUT);
   
   
+  
   Serial.begin(115200);
   SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
+  Serial.println("Started successfully.");
+  
+  //Added
+  SerialBT.begin("Maniac arms");
   Serial.println("Started successfully.");
 
   digitalWrite(SPEED, LOW);
@@ -34,6 +50,9 @@ void setup()
   digitalWrite(FRIGHT, LOW);
   digitalWrite(BRIGHT, LOW);
   
+  //Added
+  leftArm.attach(leftArmPin);
+  rightArm.attach(rightArmPin);
 }
 
 char readIn;
@@ -91,6 +110,19 @@ void loop()
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("TURN RIGHT");
   }
+  
+  //added code from robotarms.ino
+  //changed readPos to readIn
+  
+    else if (readIn == 'o') {
+    rightArm.write(leftServo1AngleMin);
+    leftArm.write(leftServo1AngleMin);
+    Serial.println("Neutral Position");
+  }
+    else if (readIn == 'p') {
+    rightArm.write(leftServo1AngleMax);
+    leftArm.write(leftServo1AngleMax);
+    Serial.println("Lifted Position");
     
   delay(20);
 
