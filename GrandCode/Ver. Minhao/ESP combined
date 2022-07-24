@@ -56,14 +56,12 @@ void setup()
 }
 
 char readIn;
-char readPos;
 
 void loop() 
 {
   if (SerialBT.available()) //if there are bytes available in the buffer
   {
-    readIn = char(SerialBT.read());
-    readPos = char(SerialBT.read());//read in one and store it in readIn
+    readIn = char(SerialBT.read()); //read in one and store it in readIn
   }
 
   if (readIn == 'w') 
@@ -86,11 +84,11 @@ void loop()
   {
       TurnRight();
   }
-  else if (readPos == 'o')
+  else if (readIn == 'o')
   {
       Neutral();
   }
-  else if (readPos == 'p')
+  else if (readIn == 'p')
   {
       Lift();
   }
