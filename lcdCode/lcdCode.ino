@@ -45,6 +45,8 @@ byte cryEyeRight[] = { B11111, B11100, B10011, B01111, B00000, B01111, B10011, B
 
 //broken x mark eye(takes one box)
 byte xEyes[] = { B11111, B11111, B01110, B10101, B11011, B10101, B01110, B11111 };
+//dance move heart mark eye(takes one box)
+byte heartEyes[] = { B11111, B10101, B00000, B00000, B10001, B11011, B11111, B11111 };
 
 //smiles from left to right (across four boxes)
 byte smile1[] = { B00111, B00011, B10001, B11000, B11100, B11110, B11111, B11111 };
@@ -558,8 +560,55 @@ void brokenFace()
   }  
 }
 
-
-
+void heartFace()
+{
+  //code for the eyes
+  lcd.createChar(1, heartEyes);
+  lcd.setCursor(5, 0);
+  lcd.write(1);
+  lcd.setCursor(10, 0);
+  lcd.write(1);
+  
+  lcd.createChar(4, smile1);
+  lcd.setCursor(6, 1);
+  lcd.write(4);
+  
+  lcd.createChar(5, smile2);
+  lcd.setCursor(7, 1);
+  lcd.write(5);
+  
+  lcd.createChar(6, smile3);
+  lcd.setCursor(8, 1);
+  lcd.write(6);
+  
+  lcd.createChar(7, smile4);
+  lcd.setCursor(9, 1);
+  lcd.write(7);
+  
+  //holds the num of boxes that has to be filled with white
+  int row1FillNum = 14;
+  int row2FillNum = 12;
+  
+  //array of int that hold the position of boxes that has to be filled with white
+  int row1Fill[] = {0, 1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15};
+  int row2Fill[] = {0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15};
+  
+  lcd.createChar(8, fillWhite);
+  
+  //for loop to simplfy process
+  for(int i = 0; i < row1FillNum; i++)
+  {
+  	lcd.setCursor(row1Fill[i], 0);
+    lcd.write(8);
+  }
+  
+  for(int i = 0; i < row2FillNum; i++)
+  {
+  	lcd.setCursor(row2Fill[i], 1);
+    lcd.write(8);
+  }  
+}
+//--------------------------------------------------------------
 //animated sequence for robot face while resting
 void restSequence()
 {
@@ -568,7 +617,7 @@ void restSequence()
   closeEyesFace();
   delay(closedEyesDur);
   openEyes();
-  movingEyes();
+  movingEyes(0);
   closeEyesFace();
   delay(1000);
 }
@@ -609,6 +658,7 @@ void turningRightSequence()
    	moveFaceLeft(i);
     delay(25);
   }
+  delay(1000);
 }
 
 //animated sequence of robot face shifting to the left
@@ -619,9 +669,39 @@ void turningLeftSequence()
    	moveFaceRight(-i);
     delay(25);
   }
+  delay(1000);
 }
 
-
+//animated sequence that'll shift robot's face edge to edge while
+//changing it's eyes from heartShape, open, closed
+void danceFaceSequence()
+{
+  heartFace();
+  for(int i = 0; i < 5; i++)
+  {
+    setFace(-i,heartEyes);
+  }
+  delay(1000);
+  movingEyes(-4);
+  setFace(-4, eyeMiddle);
+  delay(1000);
+  
+  for(int i = -4; i < 5; i++)
+  {
+    setFace(i,eyeMiddle);
+  }
+  delay(1000);
+  movingEyes(4);
+  setFace(4, heartEyes);
+  delay(1000);
+  
+  for(int i = 4; i > 0; i--)
+  {
+    setFace(i,heartEyes);
+  }
+  heartFace();
+  delay(2000);
+}
                     
 //animated sequence for sweat drip, used in 
 //use custom char # 6 & 7 to avoid overlap
@@ -640,32 +720,32 @@ void sweatSequence(int pos)
 }
 
 //moves the eyes, used in restSequence
-void movingEyes()
+void movingEyes(int p)
 {
   int dur = 500;
   
   lcd.createChar(2, movingEyesTopLeft);
-  lcd.setCursor(4 + 1,0);
+  lcd.setCursor(5 + p, 0);
   lcd.write(2);
-  lcd.setCursor(10, 0);
+  lcd.setCursor(10 + p, 0);
   lcd.write(2);
   delay(dur);
   lcd.createChar(2, movingEyesTopRight);
-  lcd.setCursor(5,0);
+  lcd.setCursor(5 + p, 0);
   lcd.write(2);
-  lcd.setCursor(10, 0);
+  lcd.setCursor(10 + p, 0);
   lcd.write(2);
   delay(dur);
   lcd.createChar(2, movingEyesBottomRight);
-  lcd.setCursor(5,0);
+  lcd.setCursor(5 + p, 0);
   lcd.write(2);
-  lcd.setCursor(10, 0);
+  lcd.setCursor(10 + p, 0);
   lcd.write(2);
   delay(dur*2);
   lcd.createChar(2, movingEyesTopRight);
-  lcd.setCursor(5,0);
+  lcd.setCursor(5 + p, 0);
   lcd.write(2);
-  lcd.setCursor(10, 0);
+  lcd.setCursor(10 + p, 0);
   lcd.write(2);
   delay(dur*2);
   /*
@@ -676,6 +756,54 @@ void movingEyes()
   lcd.write(2);
   delay(dur);
   */
+}
+  
+void setFace(int k, byte arrEyes[])
+{
+  lcd.createChar(1, arrEyes);
+  lcd.setCursor((5 + k) % 16, 0);
+  lcd.write(1);
+  lcd.setCursor((10 + k) % 16, 0);
+  lcd.write(1);
+  
+  lcd.createChar(4, smile1);
+  lcd.setCursor((6 + k) % 16, 1);
+  lcd.write(4);
+  
+  lcd.createChar(5, smile2);
+  lcd.setCursor((7 + k) % 16, 1);
+  lcd.write(5);
+  
+  lcd.createChar(6, smile3);
+  lcd.setCursor((8 + k) % 16, 1);
+  lcd.write(6);
+  
+  lcd.createChar(7, smile4);
+  lcd.setCursor((9 + k) % 16, 1);
+  lcd.write(7);
+  
+  //holds the num of boxes that has to be filled with white
+  int row1FillNum = 14;
+  int row2FillNum = 12;
+  
+  //array of int that hold the position of boxes that has to be filled with white
+  int row1Fill[] = {0, 1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15};
+  int row2Fill[] = {0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15};
+  
+  lcd.createChar(8, fillWhite);
+  
+  //for loop to simplfy process
+  for(int i = 0; i < row1FillNum; i++)
+  { 
+  	lcd.setCursor((row1Fill[i] + k) % 16, 0);
+    lcd.write(8);
+  }
+  
+  for(int i = 0; i < row2FillNum; i++)
+  {
+  	lcd.setCursor((row2Fill[i] + k) % 16, 1);
+    lcd.write(8);
+  }    
 }
 
 /*
@@ -703,15 +831,22 @@ turningLeftSequence(): Robot face will be looking to the left and it will
                         the face will reapear from the right edge. 
                         One loop will be until face returns to original pos
 	- Used when Block-E is turing to the left
+    
+danceSequence(): Robot face will shift from middle to edge to edge to middle while switching eyes,
+	         expressing Block-E's excitement while he dances.
+	- Used when Block-E is dancing
 
 */
 void loop() {
   //openEyes();
-  //smileBlinkSequence();
-  //sweatingFaceSequence();
-  //restSequence();
-  //turningRightSequence();
-  //turningLeftSequence();
-
+  /*
+  smileBlinkSequence();
+  sweatingFaceSequence();
+  restSequence();
+  turningRightSequence();
+  turningLeftSequence();
+*/
+  danceFaceSequence();
+  
 }
 
