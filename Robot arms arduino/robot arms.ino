@@ -41,8 +41,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
    if (SerialBT.available()) { //if there are bytes available in the buffer
-    //readIn = char(SerialBT.read()); //read in one and store it in readIn
-        SerialBT.write(Serial.read());
+    readPos = char(SerialBT.read()); //read in one and store it in readIn
+        //SerialBT.write(Serial.read());
   }
   if (readPos == 'o') {
     rightArm.write(leftServo1AngleMin);
