@@ -24,7 +24,7 @@ Other stuff: The max amount of custom characters you can create and display is 8
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-//Code that indicates the on/off of each pixel in a single box(a.k.a. designs of custom characters)
+//Code that indicates the on/off of each pixel in a single box(a.k.a. custom characters)
 //------------------------------------------------------------------------------------
 //fill white pixels to entire box
 byte fillWhite[] = { B11111, B11111, B11111, B11111, B11111, B11111, B11111, B11111 };
@@ -36,6 +36,7 @@ byte eyeRight[] = { B11111, B11111, B11111, B00111, B00111, B11111, B11111, B111
 
 //opened eyes (fits in one box)
 byte openEye[] = { B11111, B10001, B01100, B01100, B00000, B10001, B11111, B11111 };
+
 byte openEyeLow[] = { B11111, B11111, B10001, B01100, B01100, B00000, B10001, B11111 };
 
 //crying eye left and right versions
@@ -161,14 +162,13 @@ byte sweat2[24][8] = {
 { B11111, B11111, B11111, B11111, B11111, B11111, B11111, B11111 },
 };
 //-----------------------------------------------------------------------------------------
-//void setup() part
+
 void setup() {
   lcd.begin(16, 2);
   lcd.home();
   Serial.begin(9600);
 }
-//-----------------------------------------------------------------------------------------
-//user-defined functions that regulates the static image of the faces 
+
 //static face for opened eyes
 void openEyes()
 {
@@ -280,6 +280,117 @@ void openEyes()
   lcd.setCursor(11, 0);
   lcd.write(8);
   */
+}
+
+//initial position: openEyes() but eyes looking to the left
+//takes integer as input and shifts k positions to the left
+//use when turing left
+void moveFaceLeft(int k)
+{
+  lcd.createChar(1, movingEyesTopRight);
+  lcd.setCursor((5 + k) % 16, 0);
+  lcd.write(1);
+  lcd.setCursor((10 + k) % 16, 0);
+  lcd.write(1);
+  
+  lcd.createChar(4, smile1);
+  lcd.setCursor((6 + k) % 16, 1);
+  lcd.write(4);
+  
+  lcd.createChar(5, smile2);
+  lcd.setCursor((7 + k) % 16, 1);
+  lcd.write(5);
+  
+  lcd.createChar(6, smile3);
+  lcd.setCursor((8 + k) % 16, 1);
+  lcd.write(6);
+  
+  lcd.createChar(7, smile4);
+  lcd.setCursor((9 + k) % 16, 1);
+  lcd.write(7);
+  
+  //holds the num of boxes that has to be filled with white
+  int row1FillNum = 14;
+  int row2FillNum = 12;
+  
+  //array of int that hold the position of boxes that has to be filled with white
+  int row1Fill[] = {0, 1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15};
+  int row2Fill[] = {0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15};
+  
+  lcd.createChar(8, fillWhite);
+  
+  //for loop to simplfy process
+  for(int i = 0; i < row1FillNum; i++)
+  { 
+  	lcd.setCursor((row1Fill[i] + k) % 16, 0);
+    lcd.write(8);
+  }
+  
+  for(int i = 0; i < row2FillNum; i++)
+  {
+  	lcd.setCursor((row2Fill[i] + k) % 16, 1);
+    lcd.write(8);
+  }  
+}
+
+//initial position: openEyes() but eyes looking to the right
+//takes integer as input and shifts face k positions to the left
+//use when turing left
+void moveFaceRight(int k)
+{
+  /*
+  In order to use the same code as openEyesLeft() 
+  we need to solve the problem that when k is negative,
+  there could be a negative coordinate which would be invalid
+  solution: shift the coordinate 16 to the right before hand so
+  that there will never be a negative number
+  	- add m = 16 to every coordinate indicator code
+  */
+  int m = 16;
+  lcd.createChar(1, movingEyesTopLeft);
+  lcd.setCursor((m + 5 + k) % 16, 0);
+  lcd.write(1);
+  lcd.setCursor((m + 10 + k) % 16, 0);
+  lcd.write(1);
+  
+  lcd.createChar(4, smile1);
+  lcd.setCursor((m + 6 + k) % 16, 1);
+  lcd.write(4);
+  
+  lcd.createChar(5, smile2);
+  lcd.setCursor((m + 7 + k) % 16, 1);
+  lcd.write(5);
+  
+  lcd.createChar(6, smile3);
+  lcd.setCursor((m + 8 + k) % 16, 1);
+  lcd.write(6);
+  
+  lcd.createChar(7, smile4);
+  lcd.setCursor((m + 9 + k) % 16, 1);
+  lcd.write(7);
+  
+  //holds the num of boxes that has to be filled with white
+  int row1FillNum = 14;
+  int row2FillNum = 12;
+  
+  //array of int that hold the position of boxes that has to be filled with white
+  int row1Fill[] = {0, 1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15};
+  int row2Fill[] = {0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15};
+  
+  lcd.createChar(8, fillWhite);
+  
+  //for loop to simplfy process
+  for(int i = 0; i < row1FillNum; i++)
+  { 
+  	lcd.setCursor((m + row1Fill[i] + k) % 16, 0);
+    lcd.write(8);
+  }
+  
+  for(int i = 0; i < row2FillNum; i++)
+  {
+  	lcd.setCursor((m + row2Fill[i] + k) % 16, 1);
+    lcd.write(8);
+  }  
 }
 
 //Static face for robot sweating, 
@@ -447,8 +558,8 @@ void brokenFace()
   }  
 }
 
-//user-defined functions of animated sequence of different faces for robot
-//-----------------------------------------------------------------------------------------
+
+
 //animated sequence for robot face while resting
 void restSequence()
 {
@@ -490,14 +601,24 @@ void sweatingFaceSequence()
   delay(1000);
 }
 
-void movingRightSequence()
+//animated sequence of robot face shifting to the right
+void turningRightSequence()
 {
-  
+  for(int i = 0; i < 16; i++)
+  {
+   	moveFaceLeft(i);
+    delay(25);
+  }
 }
 
-void movingLeftSequence()
+//animated sequence of robot face shifting to the left
+void turningLeftSequence()
 {
-  
+  for(int i = 0; i < 16; i++)
+  {
+   	moveFaceRight(-i);
+    delay(25);
+  }
 }
 
 
@@ -524,7 +645,7 @@ void movingEyes()
   int dur = 500;
   
   lcd.createChar(2, movingEyesTopLeft);
-  lcd.setCursor(5,0);
+  lcd.setCursor(4 + 1,0);
   lcd.write(2);
   lcd.setCursor(10, 0);
   lcd.write(2);
@@ -562,18 +683,35 @@ List of functions that will display animated face for different actions
 
 smileBlinkSequence(): Robot face will blink while smiling
 	- used when Block-E is moving
+    
 sweatingFaceSequence(): Robot face will be looking like he's putting in work
 						and there will be sweat dripping 
     - Used when Block_E is picking up parts
+    
 restSequence(): Robot face will be closed and open once in a while. Eyes will
 				will move around and check for surrounding before closing again
     - Used when Block-E is not doing anything
+    
+turningRightSequence(): Robot face will be looking to the right and it will
+						shift to the right until it reaches the edge, in which
+                        the face will reapear from the left edge. 
+                        One loop will be until face returns to original pos
+	- Used when Block-E is turing to the right
+    
+turningLeftSequence(): Robot face will be looking to the left and it will
+						shift to the left until it reaches the edge, in which
+                        the face will reapear from the right edge. 
+                        One loop will be until face returns to original pos
+	- Used when Block-E is turing to the left
 
 */
-
 void loop() {
-  
+  //openEyes();
   //smileBlinkSequence();
   //sweatingFaceSequence();
   //restSequence();
+  //turningRightSequence();
+  //turningLeftSequence();
+
 }
+
