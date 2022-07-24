@@ -1,0 +1,199 @@
+//Arduino IDE code for ESP 32 
+// COMBIMED code for: MOTOR, UART(LCD), ARMS, and DANCE
+
+#include "BluetoothSerial.h"
+#include <Servo_ESP32.h>  //library for arms(servo)
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)           //error catching
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT; //Bluetooth Connection
+
+//#define SPEED 19   //SPEED is unnecessary to run it
+#define FORWARD 18   //left wheels
+#define BACKWARD 5   //left wheels
+// #define SRIGHT 14 //SPEED is unnecessary to run it
+#define FRIGHT 32    //Right wheels
+#define BRIGHT 15    //Right wheels
+
+static const int leftArmPin = 14;
+static const int rightArmPin = 33;
+
+Servo_ESP32 leftArm;
+Servo_ESP32 rightArm;
+
+int leftServoAngle =90;
+int leftServo1AngleMin =0;
+int leftServo1AngleMax = 180;
+
+void setup() 
+{
+  //pinMode(SPEED, OUTPUT);
+  pinMode(FORWARD, OUTPUT);
+  pinMode(BACKWARD, OUTPUT);
+  //pinMode(SRIGHT, OUTPUT);
+  pinMode(FRIGHT, OUTPUT);
+  pinMode(BRIGHT, OUTPUT);
+  
+  
+  Serial.begin(115200);
+  Serial1.begin(115200);       //UART connect to Arduino Uno
+  SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
+  Serial.println("Started successfully.");
+  
+
+  //digitalWrite(SPEED, LOW);
+  digitalWrite(FORWARD, LOW);
+  digitalWrite(BACKWARD, LOW);
+  //digitalWrite(SRIGHT, LOW);
+  digitalWrite(FRIGHT, LOW);
+  digitalWrite(BRIGHT, LOW);
+
+  leftArm.attach(leftArmPin);
+  rightArm.attach(rightArmPin);
+  
+}
+
+char readIn;
+char readPos;
+
+void loop() 
+{
+  if (SerialBT.available()) //if there are bytes available in the buffer
+  {
+    readIn = char(SerialBT.read());
+    readPos = char(SerialBT.read());//read in one and store it in readIn
+  }
+
+  if (readIn == 'w') 
+  {
+      Forward();
+  }
+  else if (readIn == 's')
+  {
+      Backward();
+  }
+  else if (readIn == 'x')
+  {
+      Stop();
+  }
+  else if (readIn == 'a')
+  {
+      TurnLeft();
+  }
+  else if (readIn == 'd')
+  {
+      TurnRight();
+  }
+  else if (readPos == 'o')
+  {
+      Neutral();
+  }
+  else if (readPos == 'p')
+  {
+      Lift();
+  }
+  else if (readIn == 't') //dance at 58bpm
+  {
+        TurnLeft();
+        delay(1034);
+        TurnRight();  
+        delay(1034);
+        TurnLeft();
+        delay(1034);
+        TurnRight();  
+        delay(1034);
+//        Backward();
+//        delay(1034);   // when Backward is included the program crashes. 
+        Forward();
+        delay(1034);
+        Lift();
+        delay(1034);
+        Neutral();
+        delay(1034);
+        Lift();
+        delay(1034);
+        Neutral();
+        delay(1034);
+        Stop();   
+   } 
+   else 
+   {
+    Stop();
+    SerialBT.println("ERRORRRR");
+   }
+    
+  delay(100);
+
+}
+
+void Forward()
+{
+    //digitalWrite(SPEED, 100);
+    digitalWrite(FORWARD, HIGH);
+    digitalWrite(BACKWARD, LOW);
+    //digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("going forward!");
+    Serial1.print('m');
+}
+
+void Backward()
+{
+    //digitalWrite(SPEED, 100);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, HIGH);
+    //digitalWrite(SRIGHT, 100);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, HIGH);
+    SerialBT.println("going backward");
+}
+
+void Stop()
+{
+    //digitalWrite(SPEED, 0);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    //digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("STOP");
+}
+
+void TurnLeft()
+{
+    //digitalWrite(SPEED, 0);
+    digitalWrite(FORWARD, LOW);
+    digitalWrite(BACKWARD, LOW);
+    //digitalWrite(SRIGHT, 50);
+    digitalWrite(FRIGHT, HIGH);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN LEFT");
+}
+
+void TurnRight()
+{
+    //digitalWrite(SPEED, 50);
+    digitalWrite(FORWARD, HIGH);
+    digitalWrite(BACKWARD, LOW);
+    //digitalWrite(SRIGHT, 0);
+    digitalWrite(FRIGHT, LOW);
+    digitalWrite(BRIGHT, LOW);
+    SerialBT.println("TURN RIGHT");
+}
+
+void Neutral()
+{
+   rightArm.write(leftServo1AngleMin);
+   leftArm.write(leftServo1AngleMin);
+   Serial.println("Neutral Position");
+}
+
+void Lift()  //to life arm 180 degrees
+{
+    rightArm.write(leftServo1AngleMax);
+    leftArm.write(leftServo1AngleMax);
+    Serial.println("Lifted Position");
+}
