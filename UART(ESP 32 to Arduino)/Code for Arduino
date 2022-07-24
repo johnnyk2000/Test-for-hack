@@ -212,7 +212,7 @@ void setup() {
   }
 }
 
-char uart_recieve; //Define char variable that will store char from ESP32
+char uart_receive; //Define char variable that will store char from ESP32
 
 void loop() {
   if(Serial.available()) {
