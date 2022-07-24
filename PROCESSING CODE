@@ -5,7 +5,7 @@ String Text = "";
 void setup()
 {
  size(900,1000);                         // create window of this size
- myPort=new Serial(this, "COM5", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
+ myPort=new Serial(this, "COM4", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
  myPort.bufferUntil('\n');               //delays calling serialEvent unitl reaching '\n'
 }
 
@@ -52,8 +52,15 @@ void draw()
     myPort.write('x');
     state = 0;
   }
+  else if (state == 6) {
+    myPort.write('o');
+    state = 0;
 }
-  
+else if (state == 7) {
+    myPort.write('p');
+    state = 0;
+  }
+}
 
 void keyPressed() {               //called whenever a key is pressed, key is automatically set to the key that is pressed
   
@@ -80,6 +87,16 @@ void keyPressed() {               //called whenever a key is pressed, key is aut
   {
     //stop the car
     state = 5;
+  }
+  else if(key == 'o')
+  {
+    //arm neutral
+     state = 6;
+  }
+  else if(key == 'p')
+  {
+    //arm lift
+    state = 7;
   }
   
 }
