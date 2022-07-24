@@ -96,33 +96,13 @@ void loop()
   }
   else if (readIn == 't') //dance at 58bpm
   {
-        TurnLeft();
-        delay(1034);
-        TurnRight();  
-        delay(1034);
-        TurnLeft();
-        delay(1034);
-        TurnRight();  
-        delay(1034);
-//        Backward();
-//        delay(1034);   // when Backward is included the program crashes. 
-        Forward();
-        delay(1034);
-        Lift();
-        delay(1034);
-        Neutral();
-        delay(1034);
-        Lift();
-        delay(1034);
-        Neutral();
-        delay(1034);
-        Stop();   
-   } 
-   else 
-   {
+      Dance();  
+  } 
+  else 
+  {
     Stop();
     SerialBT.println("ERRORRRR");
-   }
+  }
     
   delay(100);
 
@@ -196,4 +176,19 @@ void Lift()  //to life arm 180 degrees
     rightArm.write(leftServo1AngleMax);
     leftArm.write(leftServo1AngleMax);
     Serial.println("Lifted Position");
+}
+
+void Dance()
+{
+        TurnLeft();
+        Neutral();
+        delay(4138);
+        TurnRight(); 
+        Lift();
+        delay(4138);
+        
+//        Backward();
+//        delay(1034);   // when Backward is included the program crashes. 
+
+        Stop(); 
 }
