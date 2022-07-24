@@ -98,11 +98,11 @@ void loop()
   {
       Dance();  
   } 
-  else 
-  {
-    Stop();
-    SerialBT.println("ERRORRRR");
-  }
+// else 
+//  {
+//    Stop();
+//    SerialBT.println("ERRORRRR");
+//  }
     
   delay(100);
 
