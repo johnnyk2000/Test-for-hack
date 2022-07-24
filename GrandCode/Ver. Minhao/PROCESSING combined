@@ -1,6 +1,3 @@
-// PROCESSING CODE COMBINED: Motor, arms, dance
-// REMEMBER TO CHANGE TO THE CORRECT BLUETOOTH COM PORT
-
 import processing.serial.*;  //imports library used for wireless comm with the HC-05
 Serial myPort;               // declares Serial Port object from library
 String Text = "";
@@ -8,7 +5,7 @@ String Text = "";
 void setup()
 {
  size(900,1000);                         // create window of this size
- myPort=new Serial(this, "COM5", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
+ myPort=new Serial(this, "COM4", 115200);  //COM port will likely be different, try different ones until it works (usually one of COM3-COM7)
  myPort.bufferUntil('\n');               //delays calling serialEvent unitl reaching '\n'
 }
 
@@ -30,17 +27,19 @@ void draw()
   stroke(33);                     // sets color used for border around shapes
   strokeWeight(1);                // sets width of stroke when drawing shapes
   
- 
+ rect(x,700,50,50,10);           //creates a rectangle at x,y with size width,height
+  x+=1;
+  if (x == 800)
+    x=0;
+    
   fill(0);
   textSize(32);
   text(Text, 400, 700);           //draws text at x,y
     
-  if (state == 1) 
-  {
+  if (state == 1) {
     myPort.write('w');            //writes to the Bluetooth Serial port
     state = 0;
-  } else if (state == 2) 
-  {
+  } else if (state == 2) {
     myPort.write('s');
     state = 0;
   }else if (state == 3) {
@@ -57,7 +56,7 @@ void draw()
     myPort.write('o');
     state = 0;
   }
-  else if (state == 7) {
+ else if (state == 7) {
     myPort.write('p');
     state = 0;
   }
@@ -65,8 +64,9 @@ void draw()
     myPort.write('t');
     state = 0;
   }
-}
   
+  
+}
 
 void keyPressed() {               //called whenever a key is pressed, key is automatically set to the key that is pressed
   
@@ -96,12 +96,12 @@ void keyPressed() {               //called whenever a key is pressed, key is aut
   }
   else if(key == 'o')
   {
-    //neutral arms
-    state = 6;
+    //arm neutral
+     state = 6;
   }
   else if(key == 'p')
   {
-    //lift arms
+    //arm lift
     state = 7;
   }
   else if(key == 't')
