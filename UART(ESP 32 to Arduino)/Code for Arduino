@@ -119,6 +119,90 @@ void openEyes()
   lcd.write(8);
 }
 
+void closeEyes()
+{
+  lcd.createChar(1, eyeLeft);
+  lcd.setCursor(4, 0);
+  lcd.write(1);
+  lcd.setCursor(9, 0);
+  lcd.write(1);
+  
+  lcd.createChar(2, eyeMiddle);
+  lcd.setCursor(5, 0);
+  lcd.write(2);
+  lcd.setCursor(10, 0);
+  lcd.write(2);
+  
+  lcd.createChar(3, eyeRight);
+  lcd.setCursor(6, 0);
+  lcd.write(3);
+  lcd.setCursor(11, 0);
+  lcd.write(3);
+  
+  lcd.createChar(4, smile1);
+  lcd.setCursor(6, 1);
+  lcd.write(4);
+  
+  lcd.createChar(5, smile2);
+  lcd.setCursor(7, 1);
+  lcd.write(5);
+  
+  lcd.createChar(6, smile3);
+  lcd.setCursor(8, 1);
+  lcd.write(6);
+  
+  lcd.createChar(7, smile4);
+  lcd.setCursor(9, 1);
+  lcd.write(7);
+  
+  lcd.createChar(8, fillWhite);
+  lcd.setCursor(0, 0);
+  lcd.write(8);
+  lcd.setCursor(1, 0);
+  lcd.write(8);
+  lcd.setCursor(2, 0);
+  lcd.write(8);
+  lcd.setCursor(3, 0);
+  lcd.write(8);
+  lcd.setCursor(7, 0);
+  lcd.write(8);
+  lcd.setCursor(8, 0);
+  lcd.write(8);
+  lcd.setCursor(12, 0);
+  lcd.write(8);
+  lcd.setCursor(13, 0);
+  lcd.write(8);
+  lcd.setCursor(14, 0);
+  lcd.write(8);
+  lcd.setCursor(15, 0);
+  lcd.write(8);
+  lcd.setCursor(0, 1);
+  lcd.write(8);
+  lcd.setCursor(1, 1);
+  lcd.write(8);
+  lcd.setCursor(2, 1);
+  lcd.write(8);
+  lcd.setCursor(3, 1);
+  lcd.write(8);
+  lcd.setCursor(4, 1);
+  lcd.write(8);
+  lcd.setCursor(5, 1);
+  lcd.write(8);
+  lcd.setCursor(10, 1);
+  lcd.write(8);
+  lcd.setCursor(11, 1);
+  lcd.write(8);
+  lcd.setCursor(12, 1);
+  lcd.write(8);
+  lcd.setCursor(13, 1);
+  lcd.write(8);
+  lcd.setCursor(14, 1);
+  lcd.write(8);
+  lcd.setCursor(15, 1);
+  lcd.write(8);  
+}
+
+
 void setup() {
   lcd.begin(16, 2);
   lcd.home();
