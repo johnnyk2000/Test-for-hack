@@ -38,8 +38,11 @@ void setup()
   
   
   Serial.begin(115200);
-  Serial1.begin(115200);
-  SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
+  Serial2.begin(115200);
+//  while(!Serial1){
+//    Serial.println("Waiting...");  
+//    }
+  SerialBT.begin("Maniac esp"); //Bluetooth name is ESP_TMM
   Serial.println("Started successfully.");
   
 
@@ -70,7 +73,7 @@ void loop()
     digitalWrite(FRIGHT, HIGH);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("going forward!");
-    Serial1.print('m');
+    Serial2.print('m');
 
   }
   else if (readIn == 's'){
