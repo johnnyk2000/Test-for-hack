@@ -42,6 +42,7 @@ void setup()
   SerialBT.begin("ESP_TMM_1"); //Bluetooth name is ESP_TMM
   Serial.println("Started successfully.");
   
+// Everything is OFF from the beginning
 
   //digitalWrite(SPEED, LOW);
   digitalWrite(FORWARD, LOW);
@@ -61,41 +62,42 @@ void loop()
 {
   if (SerialBT.available()) //if there are bytes available in the buffer
   {
-    readIn = char(SerialBT.read()); //read in one and store it in readIn
+    readIn = char(SerialBT.read()); //read in one character from Processing and store it in readIn
   }
 
-  if (readIn == 'w') 
+  if (readIn == 'w')     // if 'w' is pressed on the keyboard, car moves forward. 
   {
       Forward();
   }
-  else if (readIn == 's')
+  else if (readIn == 's') // if 's' is pressed on the keyboard, car moves backward. 
   {
       Backward();
   }
-  else if (readIn == 'x')
+  else if (readIn == 'x') // if 'x' is pressed on the keyboard, car stops. 
   {
       Stop();
   }
-  else if (readIn == 'a')
+  else if (readIn == 'a') // if 'a' is pressed on the keyboard, car turns left. 
   {
       TurnLeft();
   }
-  else if (readIn == 'd')
+  else if (readIn == 'd') // if 'd' is pressed on the keyboard, car turns right. 
   {
       TurnRight();
   }
-  else if (readIn == 'o')
+  else if (readIn == 'o') // if 'a' is pressed on the keyboard, arm goes to neutral position. 
   {
       Neutral();
   }
-  else if (readIn == 'p')
+  else if (readIn == 'p') // if 'a' is pressed on the keyboard, arm goes to lifted position.
   {
       Lift();
   }
-  else if (readIn == 't') //dance at 58bpm
+  else if (readIn == 't') // if 't' is pressed on the keyboard, both wheels and arms will dance.
   {
       Dance();  
   } 
+  
 // else 
 //  {
 //    Stop();
@@ -115,7 +117,7 @@ void Forward()
     digitalWrite(FRIGHT, HIGH);
     digitalWrite(BRIGHT, LOW);
     SerialBT.println("going forward!");
-    Serial1.print('m');
+    Serial1.print('m');                   //transmits data to Arduino Uno: when car moves forward, a blinking face will show up on the LCD
 }
 
 void Backward()
@@ -180,10 +182,10 @@ void Dance()
 {
         TurnLeft();
         Neutral();
-        delay(4138);
+        delay(4138); //car turns left and arm stays at neutral position for 4 secs
         TurnRight(); 
         Lift();
-        delay(4138);
+        delay(4138); //car turns right and arm moves to lifted position for 4 secs
         
 //        Backward();
 //        delay(1034);   // when Backward is included the program crashes. 
