@@ -77,7 +77,7 @@ void loop() {
   {
     sweatingFaceSequence();
   }
-  else
+  else if (uart_receieve == 'r')
   {
     restSequence();
   }  
