@@ -61,19 +61,19 @@ void loop() {
   {
     smileBlinkSequence();
   }
-  else if (uart_receive = 'b')
+  else if (uart_receive == 'b')
   {
     danceFaceSequence();
   }
-  else if (uart_receive = 'f')
+  else if (uart_receive == 'f')
   {
     turningLeftSequence();
   }
-  else if (uart_receive = 'g')
+  else if (uart_receive == 'g')
   {
     turningRightSequence();
   }
-  else if (uart_receive = 'v')
+  else if (uart_receive == 'v')
   {
     sweatingFaceSequence();
   }
